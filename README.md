@@ -64,7 +64,7 @@ This will compile the TypeScript files and bundle the frontend assets.
 
 ## Configuration
 
-These are the configuration aspects that matter most, at a quick glance.
+These are three main configuration aspects that get things working smoothly. One for Vite, one for Vercel, and the last is in the two `package.json` files since there is some custom scripting.
 
 ### Vite Configuration
 
@@ -125,6 +125,47 @@ This is located in `vercel.json` for configuring Vercel deployment settings.
   ]
 }
 ```
+
+### Custom Scripts in `package.json`
+
+The main package.json file (located at the root of the project) contains several custom scripts that manage both the client and server parts of the application. Let's break them down:
+
+```json
+"scripts": {
+    "dev:client": "vite",
+    "dev:server": "cd server && npm run dev",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "build:client": "tsc -b && vite build",
+    "build:server": "cd server && npm install && npm run build && cd ..",
+    "build": "npm run build:server && npm run build:client",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  }
+```
+
+1. `"dev:client": "vite"`: This script starts the Vite development server for the client-side code.
+2. `"dev:server": "cd server && npm run dev"`: This script changes to the server directory and runs the server's development script.
+3. `"dev": "concurrently \"npm run dev:client\" \"npm run dev:server\""`: This script uses the [concurrently](https://www.npmjs.com/package/concurrently) package to run both the client and server development scripts simultaneously. This is what you'd typically use during development.
+4. `"build:client": "tsc -b && vite build"`: This script first runs the TypeScript compiler in build mode (tsc -b) and then builds the client-side code using Vite.
+5. `"build:server": "cd server && npm install && npm run build && cd .."`: This script changes to the server directory, installs dependencies, builds the server, and then returns to the root directory.
+6. `"build": "npm run build:server && npm run build:client"`: This script runs both the server and client build scripts in sequence.
+
+### Custom Scripts in `server/package.json`
+
+Now, let's look at the scripts in the server's package.json file:
+
+```json
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "nodemon --watch 'api/**/*.ts' --exec 'ts-node' api/index.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+```
+
+1. `"dev": "nodemon --watch 'api/**/*.ts' --exec 'ts-node' api/index.ts"`: This script uses [nodemon](https://www.npmjs.com/package/nodemon) to watch for changes in TypeScript files in the api directory and restarts the server using [ts-node](https://www.npmjs.com/package/ts-node) when changes are detected. This is used for development.
+
+These custom scripts work together to provide a smooth development experience and build process for both the client and server parts of the application. The main `package.json` scripts orchestrate the overall build and development process, while the server `package.json` scripts handle server-specific tasks.
 
 This should be the basics you need to get up and running. Hopefully the hours I spent circling this can help you save some time.
 
