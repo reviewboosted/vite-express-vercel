@@ -12,6 +12,8 @@ A starter template for building and deploying a Vite + React + Express applicati
 - [Configuration](#configuration)
   - [Vite Configuration](#vite-configuration)
   - [Vercel Configuration](#vercel-configuration)
+  - [Custom Scripts in `package.json`](#custom-scripts-in-packagejson)
+  - [Custom Scripts in `server/package.json`](#custom-scripts-in-serverpackagejson)
 
 ## What's Here?
 
@@ -128,7 +130,7 @@ This is located in `vercel.json` for configuring Vercel deployment settings.
 
 ### Custom Scripts in `package.json`
 
-The main package.json file (located at the root of the project) contains several custom scripts that manage both the client and server parts of the application. Let's break them down:
+The main `package.json` file (located at the root of the project) contains several custom scripts that manage both the client and server parts of the application. Let's break them down:
 
 ```json
 "scripts": {
@@ -169,4 +171,4 @@ These custom scripts work together to provide a smooth development experience an
 
 This should be the basics you need to get up and running. Hopefully the hours I spent circling this can help you save some time.
 
-Happy hunting! #hacktheplanet
+Happy coding!
