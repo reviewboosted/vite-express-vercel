@@ -66,7 +66,7 @@ This will compile the TypeScript files and bundle the frontend assets.
 
 ## Configuration
 
-These are three main configuration aspects that get things working smoothly. One for Vite, one for Vercel, and the last is in the two `package.json` files since there is some custom scripting.
+These are a few configurations that get things working smoothly.
 
 ### Vite Configuration
 
