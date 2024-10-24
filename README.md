@@ -69,7 +69,11 @@ These are the configuration aspects that matter most, at a quick glance.
 
 ### Vite Configuration
 
-This is located in `vite.config.ts` for customizing Vite settings:
+This is located in `vite.config.ts` for customizing Vite settings.
+
+- `proxy` ensures that any requests to `/api` will be forwarded to this address, which is where the Express server is running. Of course, you can decide your own port and improve the config to align with it.
+
+- `changeOrigin: true` changes the origin of the request to match the target URL.
 
 ```typescript
 import { defineConfig } from 'vite';
@@ -91,6 +95,17 @@ export default defineConfig({
 
 ### Vercel Configuration
 
+This is located in `vercel.json` for configuring Vercel deployment settings.
+
+- `builds` specifies how to build different parts of the application:
+
+  - The first build step uses `@vercel/node` to handle the server-side code in `server/api/index.ts`.
+  - The second build step uses `@vercel/static-build` to build the client-side code, with the output directory set to `dist`.
+
+- `rewrites` defines how incoming requests should be handled:
+  - Requests to `/api/*` are forwarded to the server-side code in `server/api/index.ts`.
+  - All other requests are directed to `index.html`, allowing the client-side routing to handle them.
+
 ```json
 {
   "version": 2,
@@ -111,3 +126,7 @@ export default defineConfig({
   ]
 }
 ```
+
+This should be the basics you need to get up and running. Hopefully the hours I spent circling this can help you save some time.
+
+Happy hunting! #hacktheplanet
