@@ -1,50 +1,102 @@
-# React + TypeScript + Vite
+# Vite-Express-Vercel Starter Kit
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A starter template for building and deploying a Vite + React + Express application on Vercel. This project demonstrates how to set up a full-stack JavaScript application with a modern frontend and backend.
 
-Currently, two official plugins are available:
+## What's Here?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- A minimal setup for a Vite-based React app leveraging an Express-based server.
 
-## Expanding the ESLint configuration
+- A simple route to show you how to connect the two ports via server proxy.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Config changes you need to make for Vite and Vercel to make this work.
 
-- Configure the top-level `parserOptions` property like this:
+## Prerequisites
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Node.js (version 14+)
+  - I've personally run into issues using v23, so I would stick to the latest LTS version.
+- npm
+
+## Installation
+
+1. Clone the repo:
+
+```bash
+git clone https://github.com/internetdrew/vite-express-vercel.git
+cd vite-express-vercel
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Install dependencies for both client and server
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+```bash
+npm install
+cd server && npm install
+```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
+## Development
+
+To start the development server for both the client and the server, run:
+
+```bash
+npm run dev
+```
+
+This will concurrently start the Vite development server and the Express server.
+
+## Build
+
+To build the project for production, run:
+
+```bash
+npm run build
+```
+
+This will compile the TypeScript files and bundle the frontend assets.
+
+## Configuration
+
+These are the configuration aspects that matter most, at a quick glance.
+
+### Vite Configuration
+
+This is located in `vite.config.ts` for customizing Vite settings:
+
+```typescript
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        target: `http://localhost:3000`,
+        changeOrigin: true,
+      },
+    },
   },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+});
+```
+
+### Vercel Configuration
+
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server/api/index.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    }
+  ],
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/server/api/index.ts" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
 ```
