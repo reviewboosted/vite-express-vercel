@@ -23,8 +23,7 @@ A starter template for building and deploying a Vite + React + Express applicati
 
 ## Prerequisites
 
-- Node.js (version 14+)
-  - I've personally run into issues using v23, so I would stick to the latest LTS version.
+- Node.js
 - npm
 
 ## Installation
