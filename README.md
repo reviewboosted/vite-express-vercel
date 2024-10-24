@@ -2,6 +2,17 @@
 
 A starter template for building and deploying a Vite + React + Express application on Vercel. This project demonstrates how to set up a full-stack JavaScript application with a modern frontend and backend.
 
+## Table of Contents
+
+- [What's Here?](#whats-here)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Development](#development)
+- [Build](#build)
+- [Configuration](#configuration)
+  - [Vite Configuration](#vite-configuration)
+  - [Vercel Configuration](#vercel-configuration)
+
 ## What's Here?
 
 - A minimal setup for a Vite-based React app leveraging an Express-based server.
@@ -29,7 +40,7 @@ cd vite-express-vercel
 
 ```bash
 npm install
-cd server && npm install
+cd server && npm install && cd ..
 ```
 
 ## Development
