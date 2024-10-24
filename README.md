@@ -171,4 +171,4 @@ These custom scripts work together to provide a smooth development experience an
 
 This should be the basics you need to get up and running. Hopefully the hours I spent circling this can help you save some time.
 
-Happy coding!
+Happy building!
